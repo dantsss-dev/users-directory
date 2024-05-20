@@ -47,13 +47,25 @@ export const CreateNewPostDialogForm = ({
     }
   };
 
+  const HandleSendPostButton = () => {
+    if (title.trim() === "") {
+      setTitleError("Title is Required");
+      return;
+    } else if (body.trim() === "") {
+      setBodyError("Body is Required");
+      return;
+    } else {
+      SendNewPost();
+    }
+  };
+
   const canSave = !titleError && !bodyError && addRequestStatus === "idle";
 
   const handleBodyChange = (e) => {
     setBody(e.target.value);
     if (!e.target.validity.valid) {
       setBodyError("Body is Required");
-    } else if (e.target.value.length > 200) {
+    } else if (e.target.value.trim().length > 200) {
       setBodyError(`${body.length}/200`);
     } else {
       setBodyError(false);
@@ -151,7 +163,7 @@ export const CreateNewPostDialogForm = ({
             variant="contained"
             color="secondary"
             sx={{ borderRadius: "20px", width: "140px", fontSize: "14px" }}
-            onClick={SendNewPost}
+            onClick={HandleSendPostButton}
           >
             Create Post
           </Button>
